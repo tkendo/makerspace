@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <link href="../static/style.css" rel="stylesheet"/>
+</head>
+<body>
+<a href="{{ url_for('.index') }}">Index</a>
+<h3>Add User</h3>
+<form action="{{ url_for('.add_user') }}" method="post">
+    <table class="form">
+        <tr>
+            <th>{{ adduserform.userid.label }}</th>
+            <th>{{ adduserform.username.label }}</th>
+            <th>{{ adduserform.email.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ adduserform.userid }}</td>
+            <td>{{ adduserform.username }}</td>
+            <td>{{ adduserform.email }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+            <td><a href="{{ url_for('.scan') }}">Scan Card</a></td>
+        </tr>
+    </table>
+</form>
+<p>{{ status }}</p>
+<h3>All Users</h3>
+<table class="sql">
+    <tr>
+        <th>UserID</th>
+        <th>UserName</th>
+        <th>Email</th>
+    </tr>
+    {% for t in table %}
+    <tr>
+        <td>{{ t[0] }}</td>
+        <td>{{ t[1] }}</td>
+        <td>{{ t[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h3>Remove User</h3>
+<form action="{{ url_for('.remove_user') }}" method="post">
+    <table class="form">
+        <tr>
+            <th>{{ removeuserform.userid.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ removeuserform.userid }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

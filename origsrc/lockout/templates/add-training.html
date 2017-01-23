@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Training Management</title>
+    <link href="../static/style.css" rel="stylesheet"/>
+</head>
+<body>
+<a href="{{ url_for('.index') }}">Index</a>
+<h3>Lookup User</h3>
+
+<form action="{{ url_for('.lookup') }}" method="post">
+    <table class="form">
+        <tr>
+            <th>{{ lookupform.username.label }}</th>
+            <th>{{ lookupform.email.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ lookupform.username }}</td>
+            <td>{{ lookupform.email }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+        </tr>
+    </table>
+</form>
+
+<table class="sql">
+    <tr>
+        <th>UserID</th>
+        <th>Username</th>
+        <th>Email</th>
+    </tr>
+    {% for t in lookuptable %}
+    <tr>
+        <td>{{ t[0] }}</td>
+        <td>{{ t[1] }}</td>
+        <td>{{ t[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Add Training</h3>
+<form action="{{ url_for('.add_training') }}" method="post">
+    <table class="form">
+        <tr>
+            <th>{{ addtrainingform.userid.label }}</th>
+            <th>{{ addtrainingform.machineid.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ addtrainingform.userid }}</td>
+            <td>{{ addtrainingform.machineid }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+        </tr>
+    </table>
+</form>
+
+<p>{{ status }}</p>
+<h3>Training Data</h3>
+<table class="sql">
+    <tr>
+        <th>UserID</th>
+        <th>UserName</th>
+        <th>Email</th>
+        <th>MachineID</th>
+        <th>MachineName</th>
+    </tr>
+    {% for t in table %}
+    <tr>
+        <td>{{ t[0] }}</td>
+        <td>{{ t[1] }}</td>
+        <td>{{ t[2] }}</td>
+        <td>{{ t[3] }}</td>
+        <td>{{ t[4] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h3>Remove Training</h3>
+<form action="{{ url_for('.remove_training') }}" method="post">
+    <table class="form">
+        <tr>
+            <th>{{ removetrainingform.userid.label }}</th>
+            <th>{{ removetrainingform.machineid.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ removetrainingform.userid }}</td>
+            <td>{{ removetrainingform.machineid }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

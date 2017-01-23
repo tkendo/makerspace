@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulation</title>
+</head>
+<body>
+
+<h3>Checkout</h3>
+<form action="{{ url_for('.send_request') }}" method="post">
+    <table class="form">
+        <tr>
+            <th>{{ checkout.userid.label }}</th>
+            <th>{{ checkout.machineid.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ checkout.userid }}</td>
+            <td>{{ checkout.machineid }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+        </tr>
+    </table>
+</form>
+
+
+<br><br>
+<h3>Checkin</h3>
+<form action="{{ url_for('.send_request') }}" method="post">
+    <table class="form">
+        <tr>
+            <th>{{ checkin.machineid.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ checkin.machineid }}</td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+        </tr>
+    </table>
+</form>
+
+
+</body>
+</html>
