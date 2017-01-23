@@ -1,5 +1,8 @@
 # README #
 
+NOTE: origsrc directory is copy of original code from first semester.
+All new changes will be in other directories.
+
 ### What is this repository for? ###
 
 * Code behind the Maker Space RFID Lockout-Tagout project for MEE/ECE 432L.
