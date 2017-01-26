@@ -14,7 +14,8 @@ if __name__ == "__main__":
     # Tested with my card reader: 208 bytes for student IDs
     # and chunk size is 8 bytes -tk 1/25/16
     # Device vendor ID and product ID can be found using lsbusb 
-    reader = BarCodeReader(0xc216, 0x0180, 208, 8, should_reset=False, debug=False)
+    reader = BarCodeReader(0xc216, 0x0180, 208, 8, should_reset=False, 
+                            timeout_msec=100, debug=False)
     reader.initialize()
     print(reader.read().strip())
 

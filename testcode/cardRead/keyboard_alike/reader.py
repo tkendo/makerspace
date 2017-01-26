@@ -3,6 +3,8 @@ import usb.util
 
 from keyboard_alike import mapping
 
+# Error code for device timeout
+ERRNO_TIMEOUT = 110
 
 class DeviceException(Exception):
     pass
@@ -13,7 +15,7 @@ class ReadException(Exception):
 
 
 class Reader(object):
-    def __init__(self, vendor_id, product_id, data_size, chunk_size, should_reset, debug=False):
+    def __init__(self, vendor_id, product_id, data_size, chunk_size, should_reset, timeout_msec = 1000, debug=False):
         """
         :param vendor_id: USB vendor id (check dmesg or lsusb under Linux)
         :param product_id: USB device id (check dmesg or lsusb under Linux)
@@ -21,6 +23,7 @@ class Reader(object):
         :param chunk_size: chunk size like 6 or 8, check experimentally by looking on the raw output with debug=True
         :param should_reset: if true will also try to reset device preventing garbage reading.
         Doesn't work with all devices - locks them
+        :param timeout_msec: the maximum timeout in milliseconds for reads. 
         :param debug: if true will print raw data
         """
         self.interface = 0
@@ -32,6 +35,7 @@ class Reader(object):
         self.debug = debug
         self._device = None
         self._endpoint = None
+        self.timeout = timeout_msec
 
     def initialize(self):
         self._device = usb.core.find(idVendor=self.vendor_id, idProduct=self.product_id)
@@ -60,10 +64,10 @@ class Reader(object):
 
         while True:
             try:
-                data += self._endpoint.read(self._endpoint.wMaxPacketSize)
+                data += self._endpoint.read(self._endpoint.wMaxPacketSize, self.timeout)
                 data_read = True
             except usb.core.USBError as e:
-                if e.args[0] == 110 and data_read:
+                if e.args[0] == ERRNO_TIMEOUT and data_read:
                     if len(data) < self.data_size:
                         raise ReadException('Got %s bytes instead of %s - %s' % (len(data), self.data_size, str(data)))
                     else:
