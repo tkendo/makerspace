@@ -1,0 +1,15 @@
+README - cardRead
+by: T Kendo
+date: 1/30/2017
+
+This folder contains python code that can read the HID based USB magnetic
+strip card reader. This is based off the the pyusb-keyboard-alike open
+source project from:
+
+https://github.com/riklaunim/pyusb-keyboard-alike
+
+The script test_hid.py uses the Reader class from the keyboard_alike project
+and reads in a single card swipe. This must be run with root access to talk
+to the card reader. 
+
+Calls to the read() method are blocking. 
