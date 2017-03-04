@@ -9,7 +9,10 @@
 
 
 from lockout import app
+#import logging
+
+#app.logger.setLevel(logging.DEBUG)
 
 if __name__ == "__main__":
-    app.run(host='192.168.1.2', port=80)
+    app.run(host='192.168.2.5', port=80, debug = True)
     # app.run()

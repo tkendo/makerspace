@@ -11,7 +11,7 @@ from sqlite3 import connect
 
 from lockout import max_rows
 
-conn = connect('/home/pi/server/lockout.sqlite')
+conn = connect('../lockout.sqlite')
 cur = conn.cursor()
 
 
