@@ -28,8 +28,8 @@ class keypad():
     ["*","0","#"]
     ]
    
-    ROW         = [2,3,4,17] 
-    COLUMN      = [27,22,26]
+    ROW         = [21,20,16,12] 
+    COLUMN      = [25,24,23]
    
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
@@ -39,18 +39,18 @@ class keypad():
         # Set all columns as output low
         for j in range(len(self.COLUMN)):
             GPIO.setup(self.COLUMN[j], GPIO.OUT)
-            GPIO.output(self.COLUMN[j], GPIO.LOW)
+            GPIO.output(self.COLUMN[j], GPIO.HIGH)
        
         # Set all rows as input
         for i in range(len(self.ROW)):
-            GPIO.setup(self.ROW[i], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.ROW[i], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
        
         # Scan rows for pushed key/button
         # A valid key press should set "rowVal"  between 0 and 3.
         rowVal = -1
         for i in range(len(self.ROW)):
             tmpRead = GPIO.input(self.ROW[i])
-            if tmpRead == 0:
+            if tmpRead == 1:
                 rowVal = i
                
         # if rowVal is not 0 thru 3 then no button was pressed and we can exit
@@ -60,18 +60,18 @@ class keypad():
        
         # Convert columns to input
         for j in range(len(self.COLUMN)):
-                GPIO.setup(self.COLUMN[j], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+                GPIO.setup(self.COLUMN[j], GPIO.IN, pull_up_down=GPIO.PUD_UP)
        
         # Switch the i-th row found from scan to output
         GPIO.setup(self.ROW[rowVal], GPIO.OUT)
-        GPIO.output(self.ROW[rowVal], GPIO.HIGH)
+        GPIO.output(self.ROW[rowVal], GPIO.LOW)
 
         # Scan columns for still-pushed key/button
         # A valid key press should set "colVal"  between 0 and 2.
         colVal = -1
         for j in range(len(self.COLUMN)):
             tmpRead = GPIO.input(self.COLUMN[j])
-            if tmpRead == 1:
+            if tmpRead == 0:
                 colVal=j
                
         # if colVal is not 0 thru 2 then no button was pressed and we can exit
@@ -101,7 +101,6 @@ def process_keypad ( ui_urn, lcd_urn ):
     while 1:
         while digit == None:
             digit = kp.getKey()
-
         ui_actor.tell ( {'type' : 'char',
                          'data' : digit } )
         lcd_actor.tell ( {'type' : 'char',
