@@ -18,6 +18,12 @@
 import pykka
 import RPi.GPIO as GPIO
 import time
+import server_actors
+
+
+ROW         = [21,20,16,12] 
+COLUMN      = [25,24,23]
+   
 
 class keypad():
     # CONSTANTS   
@@ -33,9 +39,8 @@ class keypad():
    
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
-   
-    def getKey(self):
-       
+
+    def getKey(self): 
         # Set all columns as output low
         for j in range(len(self.COLUMN)):
             GPIO.setup(self.COLUMN[j], GPIO.OUT)
@@ -84,35 +89,37 @@ class keypad():
         return self.KEYPAD[rowVal][colVal]
        
     def exit(self):
+        
         # Reinitialize all rows and columns as input at exit
         for i in range(len(self.ROW)):
                 GPIO.setup(self.ROW[i], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        
         for j in range(len(self.COLUMN)):
                 GPIO.setup(self.COLUMN[j], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-def process_keypad ( ui_urn, lcd_urn ):
-    # Initialize the keypad class
-    buf = []
-    kp = keypad()
-    ui_actor = pykka.ActorRegistry.get_by_urn ( ui_urn )
-    lcd_actor = pykka.ActorRegistry.get_by_urn ( lcd_urn )
+def set_up_interrupts ( ):
+    GPIO.setmode(GPIO.BCM)
+    for pin in ROW:
+        GPIO.setup ( pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN )
+        GPIO.add_event_detect ( pin, GPIO.RISING, process_keypad, bouncetime=400)
+
+def kill_interrupts ( ):
+    for pin in ROW:
+        GPIO.remove_event_detect ( pin ) 
+    GPIO.cleanup ( ROW )
+    GPIO.cleanup ( COLUMN )
+
+   
+def process_keypad ( baka ):
+    kp = keypad ()
+     # Initialize the keypad class
+    ui_actor = pykka.ActorRegistry.get_by_class_name ( "UIActor" )
     # Loop while waiting for a keypress
     digit = None
-    while 1:
-        while digit == None:
-            digit = kp.getKey()
-        ui_actor.tell ( {'type' : 'char',
-                         'data' : digit } )
-        lcd_actor.tell ( {'type' : 'char',
-                         'data' : digit } )
-        digit = None
-        time.sleep ( 1 )
-        # Print the result
-        #if ( digit == '*' or digit == '#' ):
-        #    print ''.join ( buf )
-        #else:
-        #    buf.append ( digit ) 
-        #digit = None
-        #time.sleep(1)
+    while digit == None:
+        time.sleep ( 0.1 )
+        digit = kp.getKey()
+    for actor in ui_actor:
+        actor.tell ( {'type' : server_actors.UIActor_receive_char,
+                     'data' : digit } )
 
-     
