@@ -11,61 +11,54 @@ from sqlite3 import connect
 
 from lockout import max_rows
 
-conn = connect('../lockout.sqlite')
+# TODO tk: is this really the best way to establish the DB connection ?
+conn = connect('maker.sqlite')
 cur = conn.cursor()
 
+# Creates initial database tables
+def create_tables():
+    cur.execute('CREATE TABLE IF NOT EXISTS users(user_id INT PRIMARY KEY,'
+                'stu_id_hash TEXT, uname TEXT, email TEXT, is_admin INT)')
+    
+    cur.execute('CREATE TABLE IF NOT EXISTS nodes(node_id INTEGER PRIMARY KEY NOT NULL,'
+                'node_num INT, node_type INT, ip_addr TEXT, timeout INT,'
+                'name TEXT, status INT)')
+    
+    cur.execute('CREATE TABLE IF NOT EXISTS auth(auth_id INT PRIMARY KEY,'
+                'user_id INT, node_id INT,'
+                'FOREIGN KEY(user_id) REFERENCES users(user_id),'
+                'FOREIGN KEY(node_id) REFERENCES nodes(node_id))')
+    
+    cur.execute('CREATE TABLE IF NOT EXISTS checkouts(checkout_id INT PRIMARY KEY,'
+                'user_id INT, node_id INT,'
+                'start_time INT, end_time INT,'
+                'FOREIGN KEY(user_id) REFERENCES users(user_id),'
+                'FOREIGN KEY(node_id) REFERENCES nodes(node_id))')
 
-# Adds a checkout to the log
-def log_checkout(userid, machineid):
-    t = (userid, machineid,)
-    cur.execute('INSERT INTO log (requesttime, userid, machineid) VALUES (CURRENT_TIMESTAMP, ?, ?)', t)
+    cur.execute('CREATE TABLE IF NOT EXISTS log(log_id INT PRIMARY KEY,'
+                'user_id INT, node_id INT,'
+                'timestamp INT, msgcode INT,'
+                'FOREIGN KEY(user_id) REFERENCES users(user_id),'
+                'FOREIGN KEY(node_id) REFERENCES nodes(node_id))')
+
+def add_node(nd_num, nd_type, ip_addr, name, timeout = 0):
+    t = (nd_num, nd_type, ip_addr, name, timeout)
+    cur.execute('INSERT INTO nodes'
+                '(node_id, node_num, node_type, ip_addr, name, timeout, status)'
+                'VALUES (NULL,?,?,?,?,?,0)', t)
     conn.commit()
 
-
-# Checks to see if a checkout is valid
-def valid_checkout(userid, machineid):
-    if trained(userid, machineid):
-        cur.execute('SELECT * FROM checkouts WHERE userid=?', (userid,))
-        if len(cur.fetchall()) < max_rows:
-            return True
-        else:
-            return False
-    else:
-        return False
-
-
-# Checks to see it a user is trained
-def trained(userid, machineid):
-    t = (userid, machineid,)
-    cur.execute('SELECT * FROM training WHERE userid=? AND machineid=?', t)
-    if cur.fetchone():
-        return True
-    else:
-        return False
-
-
-# Adds a checkout to the checkouts table
-def transact_checkout(userid, machineid):
-    t = (userid, machineid,)
-    if is_checked_out(userid, machineid):
-        return
-    else:
-        cur.execute('INSERT INTO checkouts (checkouttime, userid, machineid) VALUES (CURRENT_TIMESTAMP, ?, ?)', t)
-        conn.commit()
-
-
-# Checks to see if a user already has a particular machine checked out
-def is_checked_out(userid, machineid):
-    t = (userid, machineid,)
-    cur.execute('SELECT * FROM checkouts WHERE userid=? AND machineid=?', t)
-    if cur.fetchone():
-        return True
-    else:
-        return False
-
-
-# Removes a checkout from the checkouts table
-def transact_checkin(machineid):
-    t = (machineid,)
-    cur.execute('DELETE FROM checkouts WHERE machineid=?', t)
+def get_node_status(nd_ip_addr):
+    t = (nd_ip_addr,)
+    cur.execute('SELECT status from nodes WHERE ip_addr = ?', t)
+    res = cur.fetchone()
+    return res
+    
+def set_node_status(nd_num, status):
+    t = (status, nd_num)
+    cur.execute('UPDATE nodes SET status = ? WHERE node_num = ?', t)
+    
     conn.commit()
+    return cur.rowcount
+
+
