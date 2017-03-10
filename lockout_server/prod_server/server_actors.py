@@ -1,6 +1,6 @@
 import process_LCD
 import process_keypad
-
+import process_cardread
 
 from threading import Timer
 import pykka
@@ -25,7 +25,9 @@ class LCDActor ( pykka.ThreadingActor ):
     def on_receive ( self, msg ):
         if ( msg['type'] == 'char'):
             self.handle_char ( msg['data'] )
-   
+        elif ( msg['type'] == 'id' ):
+            self.handle_id ( msg['data'] )
+ 
     def handle_char ( self, char ):
         if ( char == '#' or char == '*' ):
             self.buf = []
@@ -34,6 +36,9 @@ class LCDActor ( pykka.ThreadingActor ):
             self.buf.append ( char ) 
             #process_LCD.process_lcd ( CR_LF )
             process_LCD.process_lcd ( ''.join(self.buf) + CR_LF + CR_LF )
+
+    def handle_id ( self, cardId ):
+        process_LCD.process_lcd ( cardId + CR_LF + CR_LF )
  
 class KeypadActor ( pykka.ThreadingActor ):
     def __init__(self, ui_urn, lcd_urn ):
@@ -44,6 +49,23 @@ class KeypadActor ( pykka.ThreadingActor ):
     def on_receive ( self, msg ):
         if ( msg['type'] == 'start'):
             process_keypad.process_keypad ( self.ui_urn, self.lcd_urn )        
+    
+    def on_failure(self, exception_type, exception_value, traceback ):
+        print ( 'KeypadActor error: {}; {}'.format(exception_type, exception_value) )
+        print_tb(traceback)
+
+class CardreadActor ( pykka.ThreadingActor ):
+    def __init__(self, ui_urn, lcd_urn ):
+        super(CardreadActor, self).__init__(use_daemon_thread=True)
+        self.ui_urn = ui_urn
+        self.lcd_urn = lcd_urn
+        self.reader = process_cardread.BarCodeReader(0xc216, 0x0180, 208, 8, should_reset=False, 
+                            timeout_msec=100, debug=False)
+        self.reader.initialize ( )
+
+    def on_receive ( self, msg ):
+        if ( msg['type'] == 'start'):
+            process_cardread.process_cardread ( self.reader, self.ui_urn, self.lcd_urn )        
     
     def on_failure(self, exception_type, exception_value, traceback ):
         print ( 'KeypadActor error: {}; {}'.format(exception_type, exception_value) )
@@ -79,9 +101,9 @@ if __name__ == '__main__':
     ui = UIActor.start ( )
     lcd = LCDActor.start ( )
     keypad = KeypadActor.start ( ui.actor_urn, lcd.actor_urn )
-  
+    cardId = CardreadActor.start ( ui.actor_urn, lcd.actor_urn )  
     #hajimaru yo!
-    keypad.tell({'type': 'start'})
-    
+    #keypad.tell({'type': 'start'})
+    cardId.tell({'type': 'start'})
     while ( 1 ):
         pass
