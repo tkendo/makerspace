@@ -22,7 +22,7 @@ typedef struct
 } Task;
 
 void HandleTasks ( void );
-void CreateTask ( void (* TaskHandle) (void), uint16_t iTaskTime );
+void CreateTask ( void (* TaskHandle) (void), uint32_t iTaskTime );
 void InitTaskScheduler ( void );
 
 #endif /* SOURCES_TASKSCHEDULER_H */

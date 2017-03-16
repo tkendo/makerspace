@@ -7,8 +7,9 @@
 #define OFF					0x00000000
 #define PANIC       0xAAAAAAAA
 #define ON          0xFFFFFFFF
+
 void LEDHandler_init ( void );
 void LEDTask ( void );
-void SetLED ( LED eLed, uint32_t uiPattern );
+void SetLED ( GPIO eLed, uint32_t uiPattern );
 
 #endif

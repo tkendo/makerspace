@@ -28,7 +28,7 @@ void InitTaskScheduler ( void )
 	}
 }
 
-void CreateTask ( void (* TaskHandle) (void), uint16_t iTaskTime )
+void CreateTask ( void (* TaskHandle) (void), uint32_t iTaskTime )
 {
 	if ( TaskHandle && ( iTaskTime > 0 ) )
 	{
@@ -40,7 +40,7 @@ void CreateTask ( void (* TaskHandle) (void), uint16_t iTaskTime )
 
 void HandleTasks ( void )
 {
-	uint16_t uiIterator;
+	uint32_t uiIterator;
 	tuiTickTimer++;
 	for ( uiIterator = 0; uiIterator < tuiNumberOfTasks; uiIterator++ )
 	{

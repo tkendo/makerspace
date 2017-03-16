@@ -18,10 +18,10 @@ bool SetDeviceStatus ( bool bSet )
 	if ( bDeviceStatus != bSet )
 	{
 		bDeviceStatus = bSet;
-		ToggleLED ( ERROR_LED, bDeviceStatus ); 
+		ToggleGPIO ( RELAY, bDeviceStatus ); 
 	}
 	
-	return bDeviceStatus != bSet;
+	return bDeviceStatus == bSet;
 }
 
 

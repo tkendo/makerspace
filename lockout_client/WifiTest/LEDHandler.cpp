@@ -8,47 +8,37 @@ typedef struct {
 	uint8_t ucIterator;
 } LED_PATTERN;
 
-static LED_PATTERN LED_Pattern[MAX_LED];
+static LED_PATTERN LED_Pattern;
 
 #define PERIOD			32
 void LEDHandler_init ( void )
 {
-	LED_Pattern[HB_LED].uiPattern = HEART_BEAT;
-	LED_Pattern[HB_LED].uiCurrentPosition = HEART_BEAT;
-	LED_Pattern[HB_LED].ucIterator = 0;
+	LED_Pattern.uiPattern = HEART_BEAT;
+	LED_Pattern.uiCurrentPosition = HEART_BEAT;
+	LED_Pattern.ucIterator = 0;
 	
-	LED_Pattern[ERROR_LED].uiPattern = OFF;
-	LED_Pattern[HB_LED].uiCurrentPosition = OFF;
-	LED_Pattern[HB_LED].ucIterator = 0;
 }
 
 void LEDTask ( void )
 {
 	uint8_t i = 0;
-	for ( i = 0; i < MAX_LED; i++ )
-	{
-
-		ToggleLED ( (LED)i, (bool)( LED_Pattern[i].uiCurrentPosition & 0x1 ) );
+	ToggleGPIO ( (GPIO)i, (bool)( LED_Pattern.uiCurrentPosition & 0x1 ) );
 		
-		if ( LED_Pattern[i].ucIterator == PERIOD )
-		{
-			LED_Pattern[i].uiCurrentPosition = 	LED_Pattern[i].uiPattern;
-			LED_Pattern[i].ucIterator = 0;
-		}
-		else
-		{
-			LED_Pattern[i].ucIterator++;
-			LED_Pattern[i].uiCurrentPosition = LED_Pattern[i].uiCurrentPosition  >> 1;
-		}
+	if ( LED_Pattern.ucIterator == PERIOD )
+	{
+		LED_Pattern.uiCurrentPosition = LED_Pattern.uiPattern;
+		LED_Pattern.ucIterator = 0;
+	}
+	else
+	{
+	  LED_Pattern.ucIterator++;
+		LED_Pattern.uiCurrentPosition = LED_Pattern.uiCurrentPosition  >> 1;
 	}
 }
 
-void SetLED ( LED eLed, uint32_t uiPattern )
+void SetLED ( GPIO eLed, uint32_t uiPattern )
 {
-	if ( eLed > MIN_LED && eLed < MAX_LED )
-	{
-		LED_Pattern[eLed].uiPattern = uiPattern;
-		LED_Pattern[eLed].uiCurrentPosition = uiPattern;
-		LED_Pattern[eLed].ucIterator = 0;
-	}
-}
+    LED_Pattern.uiPattern = uiPattern;
+    LED_Pattern.uiCurrentPosition = uiPattern;
+    LED_Pattern.ucIterator = 0;
+} 
