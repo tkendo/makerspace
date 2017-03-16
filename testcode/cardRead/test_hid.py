@@ -1,5 +1,5 @@
 from keyboard_alike import reader
-
+import string
 
 class BarCodeReader(reader.Reader):
     """
@@ -17,6 +17,21 @@ if __name__ == "__main__":
     reader = BarCodeReader(0xc216, 0x0180, 208, 8, should_reset=False, 
                             timeout_msec=100, debug=False)
     reader.initialize()
-    print(reader.read().strip())
+    cardData = reader.read().strip()
+
+    print("ORIG:" + cardData)
+
+    start = string.find(cardData, ';')
+
+    print("START:" + str(start))
+
+    new = cardData[start+1:]
+    print("NEW:" + new)
+
+    end = string.find(new, "/")
+    final = new[:end]
+    print("FINAL:" + final)
+
+#    if start == -1 | end == -1 | 
 
     reader.disconnect()

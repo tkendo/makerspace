@@ -1,0 +1,142 @@
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9014ms
+rtt min/avg/max/mdev = 1.240/2.682/6.838/1.677 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9009ms
+rtt min/avg/max/mdev = 1.129/1.914/5.537/1.284 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 8 received, 20% packet loss, time 9016ms
+rtt min/avg/max/mdev = 1.169/3.831/17.034/5.093 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+9 packets transmitted, 0 received, 100% packet loss, time 8006ms
+
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 0 received, 100% packet loss, time 9008ms
+
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.134/1.816/3.316/0.701 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 0.974/2.457/7.506/1.886 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+9 packets transmitted, 9 received, 0% packet loss, time 8011ms
+rtt min/avg/max/mdev = 1.170/8.663/38.784/12.214 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9011ms
+rtt min/avg/max/mdev = 1.190/2.192/4.845/1.012 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.326/2.543/8.535/2.069 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.085/2.875/7.060/1.688 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.108/3.720/16.365/4.258 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.195/7.732/35.462/9.623 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.348/4.920/13.970/4.048 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.213/5.762/15.972/5.415 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9017ms
+rtt min/avg/max/mdev = 1.514/3.549/12.576/3.222 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9011ms
+rtt min/avg/max/mdev = 1.064/2.666/4.557/0.984 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9014ms
+rtt min/avg/max/mdev = 1.179/3.819/9.787/2.661 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.096/5.725/16.965/5.496 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9011ms
+rtt min/avg/max/mdev = 1.097/5.282/30.481/8.752 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9014ms
+rtt min/avg/max/mdev = 1.789/5.278/18.435/4.666 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9012ms
+rtt min/avg/max/mdev = 1.025/6.834/29.922/8.298 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9012ms
+rtt min/avg/max/mdev = 1.117/3.300/12.670/3.254 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9010ms
+rtt min/avg/max/mdev = 1.045/2.416/8.108/2.001 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9012ms
+rtt min/avg/max/mdev = 1.211/2.137/3.992/0.922 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9014ms
+rtt min/avg/max/mdev = 1.133/5.665/25.421/7.119 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9013ms
+rtt min/avg/max/mdev = 1.245/3.226/13.291/3.442 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
+
+--- 192.168.2.45 ping statistics ---
+7 packets transmitted, 7 received, 0% packet loss, time 6007ms
+rtt min/avg/max/mdev = 0.996/3.188/8.403/2.655 ms
+PING 192.168.2.45 (192.168.2.45) 64(92) bytes of data.
