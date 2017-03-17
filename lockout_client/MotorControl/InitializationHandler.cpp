@@ -16,4 +16,5 @@ void HandleInitialization ( void )
 	
 	CreateTask ( LEDTask, 300 );
   CreateTask ( SendRequest, 400 );
+  CreateTask ( MotorHandler, 100 );
 }

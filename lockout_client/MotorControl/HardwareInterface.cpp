@@ -6,6 +6,7 @@
 #define SWITCH_TO_HARDWARE_PIN(switch_in) (switch_in == SW_1) ? 15 : (switch_in == SW_2) ? 13 : (switch_in == SW_3) ? 12 : 14
 #define SWITCH_MASK   0x1
 
+
 static char postData[50];
 
 void InitHardware ( void )
@@ -16,7 +17,6 @@ void InitHardware ( void )
   pinMode ( SWITCH_TO_HARDWARE_PIN(SW_2), INPUT );
   pinMode ( SWITCH_TO_HARDWARE_PIN(SW_3), INPUT );
   pinMode ( SWITCH_TO_HARDWARE_PIN(SW_4), INPUT );
-
 }
 
 void ToggleGPIO ( GPIO eGPIO, bool bState )
@@ -37,5 +37,4 @@ uint8_t ReadSwitches ( void )
   }
   return uiSwitchVal;
 }
-
 
