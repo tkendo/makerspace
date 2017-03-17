@@ -30,13 +30,12 @@ def send_unlock():
         sys.stdout.write("arg=" + request.form['arg'] + "\n")
 
         status = get_node_status(request.remote_addr)
-
-        reply = "status\n0"
+        reply = "status:0"
         
-        if status == None:
+        if status == None or not status:
             print "Machine not found!" # TODO handle error
         else:
-            reply = "status\n" + str(status[0])
+            reply = "status:" + str(status[0][0])
 
         sys.stdout.write("reply=" + reply + "\n")
         return reply
