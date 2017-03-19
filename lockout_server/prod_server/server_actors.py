@@ -1,10 +1,10 @@
 import process_LCD
 import process_keypad
 import process_cardread
+import controller
 
 from threading import Timer
 import pykka
-
 
 import time
 import serial
@@ -21,6 +21,9 @@ LCDActor_home_screen = 'homescreen'
 #KeypadActor Messages
 KeypadActor_start = 'start'
 KeypadActor_stop = 'stop'
+
+#ControlActor messages
+ControlActor_auth = 'auth'
 
 #CardreadActor Messages
 CardreadActor_start = 'start'
@@ -62,6 +65,20 @@ class KeypadActor ( pykka.ThreadingActor ):
         print ( 'KeypadActor error: {}; {}'.format(exception_type, exception_value) )
         print_tb(traceback)
 
+class ControlActor ( pykka.ThreadingActor ):
+    def __init__(self):
+        super(ControlActor, self).__init__(use_daemon_thread=True)
+      
+    def on_receive ( self, msg ):
+        if ( msg['type'] == ControlActor_auth ):
+            controller.handle_auth_req( msg['data'] )
+        else:
+            print 'Invalid message ControlActor'
+
+    def on_failure(self, exception_type, exception_value, traceback ):
+        print ( 'ControlActor error: {}; {}'.format(exception_type, exception_value) )
+        print_tb(traceback)
+
 class CardreadActor ( pykka.ThreadingActor ):
     def __init__(self, ui_urn ):
         super(CardreadActor, self).__init__(use_daemon_thread=True)
@@ -84,11 +101,12 @@ class UIActor ( pykka.ThreadingActor ):
     STATE_MACHINE_NUMBER = 3
     STATE_LOCK_UI = 4
 
-    def __init__(self, lcd_urn):
+    def __init__(self, lcd_urn, ctrl_urn):
         super(UIActor, self).__init__(use_daemon_thread=True)
         self.buf = []
         self.ui_state = self.STATE_ID
         self.lcd_urn = lcd_urn
+        self.ctrl_urn = ctrl_urn
         self.id_buf = ""
  
     def on_failure(self, exception_type, exception_value, traceback ):
@@ -119,8 +137,22 @@ class UIActor ( pykka.ThreadingActor ):
     def handle_char ( self, char ):
         if ( char == '#' ):
             self.ui_state = self.STATE_ID
+           
+            # parse the machine number buffer 
+            if (len(self.buf) == 1):
+                mach_num = int(self.buf[0])
+            elif (len(self.buf) == 2):
+                mach_num = int(self.buf[0]) * 10 + int(self.buf[1])
+            else:
+                mach_num = -1 # error TODO handle ? 
+
+            auth_request = (mach_num, self.id_buf)
+
             self.buf = []
             pykka.ActorRegistry.get_by_urn ( self.lcd_urn ).tell ( {'type': LCDActor_home_screen } )
+            
+            pykka.ActorRegistry.get_by_urn ( self.ctrl_urn ).tell ( {'type': ControlActor_auth,
+                                                                   'data' :  ( auth_request ) } )    
  
         elif ( char == '*' ):
             if ( len ( self.buf ) > 0 ):
@@ -143,13 +175,15 @@ if __name__ == '__main__':
     print  'starting actors'
     
     lcd = LCDActor.start ( )
-    ui = UIActor.start ( lcd.actor_urn )
+    control = ControlActor.start ( )
+    ui = UIActor.start ( lcd.actor_urn, control.actor_urn )
     
     keypad = KeypadActor.start ( ui.actor_urn )
-    cardId = CardreadActor.start ( ui.actor_urn )   
+    cardId = CardreadActor.start ( ui.actor_urn )
+ 
     keypad.tell({'type': KeypadActor_start})
     cardId.tell({'type': CardreadActor_start})
     lcd.tell({'type' : LCDActor_home_screen })
 
-    while ( 1 ): 
-        pass
+#    while ( 1 ): 
+#        pass

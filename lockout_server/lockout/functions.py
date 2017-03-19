@@ -44,58 +44,50 @@ def write_db(query, args=(), one=False):
     cur.close()
     return cur.rowcount 
 
-# TODO tk: is this really the best way to establish the DB connection ?
-#conn = connect('maker.sqlite')
-#cur = conn.cursor()
-
 # Creates initial database tables
-"""
 def create_tables():
-    cur.execute('CREATE TABLE IF NOT EXISTS users(user_id INT PRIMARY KEY,'
-                'stu_id_hash TEXT, uname TEXT, email TEXT, is_admin INT)')
+    write_db('CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY NOT NULL,'
+                'stu_id_hash TEXT, uname TEXT, email TEXT, is_admin INTEGER)')
     
-    cur.execute('CREATE TABLE IF NOT EXISTS nodes(node_id INTEGER PRIMARY KEY NOT NULL,'
-                'node_num INT, node_type INT, ip_addr TEXT, timeout INT,'
-                'name TEXT, status INT)')
+    write_db('CREATE TABLE IF NOT EXISTS nodes(node_id INTEGER PRIMARY KEY NOT NULL,'
+                'node_num INTEGER, node_type INTEGER, ip_addr TEXT, timeout INTEGER,'
+                'name TEXT, status INTEGER)')
     
-    cur.execute('CREATE TABLE IF NOT EXISTS auth(auth_id INT PRIMARY KEY,'
-                'user_id INT, node_id INT,'
+    write_db('CREATE TABLE IF NOT EXISTS auth(auth_id INTEGER PRIMARY KEY NOT NULL,'
+                'user_id INTEGER, node_id INTEGER,'
+                'start_date INTEGER, end_date INTEGER,'
                 'FOREIGN KEY(user_id) REFERENCES users(user_id),'
                 'FOREIGN KEY(node_id) REFERENCES nodes(node_id))')
     
-    cur.execute('CREATE TABLE IF NOT EXISTS checkouts(checkout_id INT PRIMARY KEY,'
-                'user_id INT, node_id INT,'
-                'start_time INT, end_time INT,'
+    write_db('CREATE TABLE IF NOT EXISTS checkouts(checkout_id INTEGER PRIMARY KEY NOT NULL,'
+                'user_id INTEGER, node_id INTEGER,'
+                'start_time INTEGER, end_time INTEGER,'
                 'FOREIGN KEY(user_id) REFERENCES users(user_id),'
                 'FOREIGN KEY(node_id) REFERENCES nodes(node_id))')
 
-    cur.execute('CREATE TABLE IF NOT EXISTS log(log_id INT PRIMARY KEY,'
-                'user_id INT, node_id INT,'
-                'timestamp INT, msgcode INT,'
+    write_db('CREATE TABLE IF NOT EXISTS log(log_id INTEGER PRIMARY KEY NOT NULL,'
+                'user_id INTEGER, node_id INTEGER,'
+                'timestamp INTEGER, msgcode INTEGER,'
                 'FOREIGN KEY(user_id) REFERENCES users(user_id),'
                 'FOREIGN KEY(node_id) REFERENCES nodes(node_id))')
 
 def add_node(nd_num, nd_type, ip_addr, name, timeout = 0):
     t = (nd_num, nd_type, ip_addr, name, timeout)
-    cur.execute('INSERT INTO nodes'
+    res = write_db('INSERT INTO nodes'
                 '(node_id, node_num, node_type, ip_addr, name, timeout, status)'
                 'VALUES (NULL,?,?,?,?,?,0)', t)
-    conn.commit()
-"""
+    return res
+
 
 def get_node_status(nd_ip_addr):
     t = (nd_ip_addr,)
-    tres = query_db('SELECT status from nodes WHERE ip_addr = ?', t)
-#    res = cur.fetchone()
-    return tres
+    res = query_db('SELECT status from nodes WHERE ip_addr = ?', t)
+    return res
     
 def set_node_status(nd_num, status):
     t = (status, nd_num)
-    #cur.execute('UPDATE nodes SET status = ? WHERE node_num = ?', t)
     res = write_db('UPDATE nodes SET status = ? WHERE node_num = ?', t)
     return res
 
-#    conn.commit()
-#    return cur.rowcount
 
 

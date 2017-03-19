@@ -24,6 +24,7 @@ import sys
 
 @app.route('/unlock', methods=['POST'])
 def send_unlock():
+    create_tables()
     if request.method == 'POST':
         sys.stdout.write("RX Request: ip=" + request.remote_addr)
         sys.stdout.write(" data=" + request.get_data(as_text=True) + "\n")
@@ -31,17 +32,17 @@ def send_unlock():
 
         status = get_node_status(request.remote_addr)
         reply = "status:0"
-        
         if status == None or not status:
             print "Machine not found!" # TODO handle error
         else:
             reply = "status:" + str(status[0][0])
 
         sys.stdout.write("reply=" + reply + "\n")
-        return reply
+        return reply + "\n"
 
 #        return "beepflash\n1" 
 
+# This is a dummy method so we can enable/disable a node via HTTP request for debug
 @app.route('/setlock', methods=['POST'])
 def set_lock():
     if request.method == 'POST':
@@ -60,5 +61,5 @@ def set_lock():
             retval = 0
             print "Invalid lock value specified"
 
-        return str(retval) 
+        return ("Update success!" if retval == 1 else "Database Error") + "\n" 
 
