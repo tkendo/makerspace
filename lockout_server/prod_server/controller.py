@@ -1,9 +1,9 @@
-
+import server_actors
 import sqlite3
+import pykka
 
 DATABASE = '../maker.sqlite'
 
-# TODO this probably shouldn't be a global.. 
 db = None
 
 def get_db():
@@ -48,6 +48,17 @@ def get_nodeid(node_num):
     
     return res[0][0] if len(res) > 0 else -1
 
+def log_event():
+    print 'log'
+
+
+# Returns -1 if the node is not found in the database.
+def get_node_status(node_num):
+    t = (node_num,)
+    res = query_db('SELECT status FROM nodes WHERE node_num = ?', t)
+    
+    return res[0][0] if len(res) > 0 else -1
+
 def get_authorization(user_id, node_id):
     t = (user_id, node_id)
     res = query_db('SELECT start_date, end_date FROM auth WHERE user_id = ? AND node_id = ?', t)
@@ -60,6 +71,29 @@ def set_node_status(node_id, status):
     
     return res
 
+def reply_to_ui(msgtype, msgdata):
+    ui_actor = pykka.ActorRegistry.get_by_class_name ( "UIActor" )
+    
+    for actor in ui_actor:
+        actor.tell ( {'type' : msgtype, 'data' : msgdata} )
+    
+
+def get_mach_status(mach_num):
+    status = get_node_status(mach_num)
+     
+    if status == -1:
+        #print 'mach not found'
+        response = server_actors.MachineInvalid 
+    else:
+        #print 'mach status' + str(status) 
+        if status == 0:
+            response = server_actors.MachineUnlock
+        else:
+            response = server_actors.MachineLock
+
+    reply_to_ui(server_actors.UIActor_receive_mach_status, response)
+    
+
 def handle_auth_req(auth_req):
 #    print 'Controller: handle_auth_req'
 #    print auth_req
@@ -68,23 +102,39 @@ def handle_auth_req(auth_req):
 
     uid = get_userid(stu_id)
     if uid == -1:
-        print 'Unrecognized student ID'
-        # TODO signal error to UI and log to database
+        #print 'controller: Unrecognized student ID'
+        # TODO log to database
+        response = server_actors.AuthDeny
+        reply_to_ui(server_actors.UIActor_auth, response)
         return
 
     nid = get_nodeid(node_num)
     if nid == -1:
-        print 'Unrecognized node ID'
-        # TODO signal to UI and log to DB
+        #print 'controller: Unrecognized node ID'
+        # TODO log to DB
+        response = server_actors.AuthError
+        reply_to_ui(server_actors.UIActor_auth, response)
         return
 
     auth = get_authorization(uid, nid)
     if auth == -1:
-        print 'User not authorized for this training level'
-        # TODO signal to UI and log to DB
+        #print 'controller: User not authorized for this training level'
+        # TODO log to DB
+        response = server_actors.AuthDeny
     else:
-        print 'Access Granted!'
-        # TODO signal to UI and log to DB
-        
+        #print 'controller: Access Granted!'
+        # TODO log to DB
         set_node_status(nid, 1) 
+        response = server_actors.AuthApprove
+
+    reply_to_ui(server_actors.UIActor_auth, response)
+
+def relock_mach(mach_num):
+    #print 'controller: relock'
+    #print mach_num
+    res = set_node_status(get_nodeid(mach_num), 0)
+    
+    if res != 1:
+        print 'controller: Failed to set node status'
+
      

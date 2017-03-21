@@ -10,8 +10,11 @@ def process_lcd ( string ):
         stopbits=serial.STOPBITS_TWO,
         bytesize=serial.SEVENBITS
     )
-
+    
     ser.isOpen()
+    
+    clear = "\xFE\x48"
+    ser.write ( clear )
 
     ser.write(string)
     out = ''
