@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include "TaskScheduler.h"
 #include "HarukaOSTypedefs.h"
-#include "Arduino.h"
+
 static Task TaskTable[MAX_NUMBER_OF_TASKS];
 
 static uint32_t tuiTickTimer;

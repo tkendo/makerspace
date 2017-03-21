@@ -1,5 +1,5 @@
  /* lockout.ino
- *dd
+ *
  * Authors: Evan Cooper
  *          Jack Watkin
  *
@@ -27,19 +27,24 @@ static bool bHandleTasks = false;
 os_timer_t myTimer;
 // Connect to the network, set up pins and serial
 void setup() {
+ 
   Serial.begin(9600);
   HandleInitialization ( );
   os_timer_setfn(&myTimer, timerCallback, NULL);
   os_timer_arm(&myTimer, 1, true);
+  Serial.println ( "HAJIMARU YO!" );
 }
 
 void loop() 
 {
+  
+  
   if ( bHandleTasks )
   {
     bHandleTasks = false;  
     HandleTasks ( );
   }
+  
 
 }
 void timerCallback(void *pArg) {
