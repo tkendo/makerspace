@@ -11,9 +11,9 @@ void HandleInitialization ( void )
  
 	LEDHandler_init ( );
 	InitTaskScheduler ( );
-  InitWifi_blocking( );
+//  InitWifi_blocking( );
   InitDevice ( );
 	
 	CreateTask ( LEDTask, 300 );
-  CreateTask ( SendRequest, 400 );
+ // CreateTask ( SendRequest, 400 );
 }

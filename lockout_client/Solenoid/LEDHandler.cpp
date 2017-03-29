@@ -1,7 +1,7 @@
 #include "LEDHandler.h"
 #include "HardwareInterface.h"
 #include "stdint.h"
-#include "Arduino.h"
+
 typedef struct {
 	uint32_t uiPattern;
 	uint32_t uiCurrentPosition;
@@ -9,7 +9,7 @@ typedef struct {
 } LED_PATTERN;
 
 static LED_PATTERN LED_Pattern;
-char buff[100];
+
 #define PERIOD			32
 void LEDHandler_init ( void )
 {
@@ -23,7 +23,7 @@ void LEDTask ( void )
 {
 	uint8_t i = 0;
 	ToggleGPIO ( (GPIO)i, (bool)( LED_Pattern.uiCurrentPosition & 0x1 ) );
-  
+		
 	if ( LED_Pattern.ucIterator == PERIOD )
 	{
 		LED_Pattern.uiCurrentPosition = LED_Pattern.uiPattern;
@@ -31,7 +31,6 @@ void LEDTask ( void )
 	}
 	else
 	{
-
 	  LED_Pattern.ucIterator++;
 		LED_Pattern.uiCurrentPosition = LED_Pattern.uiCurrentPosition  >> 1;
 	}
