@@ -117,7 +117,8 @@ class CardreadActor ( pykka.ThreadingActor ):
     def __init__(self, ui_urn ):
         super(CardreadActor, self).__init__(use_daemon_thread=True)
         self.ui_urn = ui_urn
-        self.reader = process_cardread.BarCodeReader(0xc216, 0x0180, 208, 8, should_reset=False, 
+        #self.reader = process_cardread.BarCodeReader(0xc216, 0x0180, 208, 8, should_reset=False, 
+        self.reader = process_cardread.BarCodeReader(0xc216, 0x0180, 8, 8, should_reset=False, 
                             timeout_msec=100, debug=False)
         #self.reader = process_cardread.BarCodeReader(0x5131, 0x2007, 208, 8, should_reset=False, 
         #                    timeout_msec=100, debug=True)
