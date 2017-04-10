@@ -24,7 +24,7 @@ import sys
 
 @app.route('/unlock', methods=['POST'])
 def send_unlock():
-    create_tables()
+#    create_tables()
     if request.method == 'POST':
 #        sys.stdout.write("RX Request: ip=" + request.remote_addr)
 #        sys.stdout.write(" data=" + request.get_data(as_text=True) + "\n")

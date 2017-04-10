@@ -1,6 +1,7 @@
 import process_LCD
 import process_keypad
 import process_cardread
+import process_node
 import controller
 
 from threading import Timer
@@ -49,6 +50,15 @@ UIActor_receive_char = 'receive_char'
 UIActor_receive_id  = 'receive_id'
 UIActor_receive_mach_status = "receive_mach_status"
 UIActor_auth = 'auth'
+
+class NodeServerActor ( pykka.ThreadingActor ):
+    def __init__(self):
+        super(NodeServerActor, self).__init__(use_daemon_thread=True)
+        process_node.init_node_server()
+ 
+    def on_failure(self, exception_type, exception_value, traceback ):
+        print ( 'NodeServerActor error: {}; {}'.format(exception_type, exception_value) )
+        print_tb(traceback)
 
 class LCDActor ( pykka.ThreadingActor ):
     def __init__(self):
@@ -272,7 +282,8 @@ class UIActor ( pykka.ThreadingActor ):
 
 if __name__ == '__main__':
     print  'starting actors'
-    
+   
+
     lcd = LCDActor.start ( )
     control = ControlActor.start ( )
     ui = UIActor.start ( lcd.actor_urn, control.actor_urn )
@@ -284,3 +295,4 @@ if __name__ == '__main__':
     cardId.tell({'type': CardreadActor_start})
     lcd.tell({'type' : LCDActor_home_screen })
 
+    nodeServe = NodeServerActor.start ( )
