@@ -83,13 +83,13 @@ void SendRequest ( void )
   } REQUEST_STATE;
   static REQUEST_STATE eState = REQUEST_SENDING;
   int i = 0;
+
   switch ( eState )
   {
     case REQUEST_SENDING:
       if ( conn.connect ( host,  httpPort ) )
       {
-        Serial.println ( "Connecting!");
-        conn.println(message);    
+        conn.println(message);   
         eState = REQUEST_RECEIVING;
       }
 
@@ -125,7 +125,7 @@ void ParseMessage ( String * line  )
   if ( strstr ( (*line).c_str(), STATUS ) )
   { 
     eState = STATUS_DATA;
-    Serial.println ( *line );
+
     if ( strstr ( (*line).c_str(), "1" ) )
     {
       SetDeviceStatus ( true );

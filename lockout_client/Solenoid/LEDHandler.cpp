@@ -1,7 +1,7 @@
 #include "LEDHandler.h"
 #include "HardwareInterface.h"
 #include "stdint.h"
-
+#include "Arduino.h"
 typedef struct {
 	uint32_t uiPattern;
 	uint32_t uiCurrentPosition;

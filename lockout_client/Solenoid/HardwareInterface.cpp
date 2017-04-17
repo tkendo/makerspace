@@ -10,6 +10,8 @@ static char postData[50];
 
 void InitHardware ( void )
 {
+  pinMode ( 10, OUTPUT);
+  digitalWrite ( 10, LOW );
 	pinMode ( GPIO_TO_HARDWARE_PIN(HB_LED), OUTPUT );
   pinMode ( GPIO_TO_HARDWARE_PIN(RELAY), OUTPUT );
   pinMode ( SWITCH_TO_HARDWARE_PIN(SW_1), INPUT );
