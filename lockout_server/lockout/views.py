@@ -11,7 +11,7 @@ from flask import render_template, request, Response
 from serial import Serial
 
 from lockout import app
-from lockout.forms import *
+#from lockout.forms import *
 from lockout.functions import *
 
 import sys
@@ -26,7 +26,10 @@ LOG_MSGCODE_LOCK_NODE  = 4
 @app.route('/index')
 @app.route('/systemstatus')
 def index():
-    return render_template('systemstatus.html')
+    machs = get_machs()
+    machs = [m + (decode_mach_status(m[2]),) for m in machs]
+    
+    return render_template('systemstatus.html', machs=machs)
 
 def decode_mach_status(mach_status):
     if(mach_status == 0):
@@ -60,7 +63,7 @@ def decode_msgcode(msgCode):
 
 @app.route('/systemlog')
 def systemlog():
-    log = get_log()
+    log = get_log(10)
     log = [l + (make_timestamp(l[3]),decode_msgcode(l[4])) for l in log]
     return render_template('systemlog.html', log=log)
 

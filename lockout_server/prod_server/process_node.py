@@ -52,7 +52,7 @@ class nodeHandler(SocketServer.BaseRequestHandler):
         self.request.sendall(reply) 
  
 def init_node_server():
-    HOST, PORT = "192.168.2.5", 80
+    HOST, PORT = "192.168.2.5", 6000 
 
     SocketServer.TCPServer.allow_resuse_address = True
     server = SocketServer.TCPServer((HOST, PORT), nodeHandler)

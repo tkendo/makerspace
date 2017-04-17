@@ -7,10 +7,6 @@
 #-------------------------------------------
 #  20Jan17  01.00.00  EC       Initial release
 
-#from sqlite3 import connect
-
-#from lockout import max_rows
-
 import sqlite3
 from flask import g
 
@@ -84,8 +80,10 @@ def get_node_status(nd_ip_addr):
     res = query_db('SELECT status from nodes WHERE ip_addr = ?', t)
     return res
 
-def get_log():
-    res = query_db('SELECT log_id, log.user_id, log.node_id, timestamp, msgcode, msgdata, users.uname, nodes.name from log LEFT OUTER JOIN users ON users.user_id = log.user_id LEFT OUTER JOIN nodes ON nodes.node_id = log.node_id ORDER BY log_id DESC LIMIT 25')
+def get_log(record_limit):
+    t = (record_limit,)
+
+    res = query_db('SELECT log_id, log.user_id, log.node_id, timestamp, msgcode, msgdata, users.uname, nodes.name from log LEFT OUTER JOIN users ON users.user_id = log.user_id LEFT OUTER JOIN nodes ON nodes.node_id = log.node_id ORDER BY log_id DESC LIMIT ?', t)
     return res
 
 def get_log_all():
