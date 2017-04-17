@@ -14,6 +14,6 @@ void HandleInitialization ( void )
   InitWifi_blocking( );
   InitDevice ( );
 	
-	CreateTask ( LEDTask, 300 );
-  CreateTask ( SendRequest, 1000 );
+  CreateTask ( LEDTask, 300 );
+  CreateTask ( SendRequest, 400 );
 }

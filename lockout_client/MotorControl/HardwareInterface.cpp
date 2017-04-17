@@ -11,11 +11,10 @@ static char postData[50];
 void InitHardware ( void )
 {
 	pinMode ( GPIO_TO_HARDWARE_PIN(HB_LED), OUTPUT );
-//  pinMode ( GPIO_TO_HARDWARE_PIN(RELAY), OUTPUT );
- // pinMode ( SWITCH_TO_HARDWARE_PIN(SW_1), INPUT );
- // pinMode ( SWITCH_TO_HARDWARE_PIN(SW_2), INPUT );
- // pinMode ( SWITCH_TO_HARDWARE_PIN(SW_3), INPUT );
-//  pinMode ( SWITCH_TO_HARDWARE_PIN(SW_4), INPUT );
+  pinMode ( SWITCH_TO_HARDWARE_PIN(SW_1), INPUT );
+  pinMode ( SWITCH_TO_HARDWARE_PIN(SW_2), INPUT );
+  pinMode ( SWITCH_TO_HARDWARE_PIN(SW_3), INPUT );
+  pinMode ( SWITCH_TO_HARDWARE_PIN(SW_4), INPUT );
 
 }
 
