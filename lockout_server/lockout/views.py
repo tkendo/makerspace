@@ -24,11 +24,11 @@ import sys
 
 @app.route('/unlock', methods=['POST'])
 def send_unlock():
-    create_tables()
+#    create_tables()
     if request.method == 'POST':
-        sys.stdout.write("RX Request: ip=" + request.remote_addr)
-        sys.stdout.write(" data=" + request.get_data(as_text=True) + "\n")
-        sys.stdout.write("arg=" + request.form['arg'] + "\n")
+#        sys.stdout.write("RX Request: ip=" + request.remote_addr)
+#        sys.stdout.write(" data=" + request.get_data(as_text=True) + "\n")
+#        sys.stdout.write("arg=" + request.form['arg'] + "\n")
 
         status = get_node_status(request.remote_addr)
         reply = "status:0"
