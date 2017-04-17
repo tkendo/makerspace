@@ -31,7 +31,6 @@ void setup() {
   HandleInitialization ( );
   os_timer_setfn(&myTimer, timerCallback, NULL);
   os_timer_arm(&myTimer, 1, true);
-  Serial.println ( "HAJIMARU YO!" );
 }
 
 void loop() 

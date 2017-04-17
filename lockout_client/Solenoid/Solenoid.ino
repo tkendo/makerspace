@@ -17,10 +17,6 @@
 #include <Arduino.h>
 #include <stdint.h>
 #include "HardwareInterface.h"
-#define MACHINE_ID 1
-char host[100];
-char rfid[100];
-static char postData[50];
 
 int timeout;
 static bool bHandleTasks = false;
@@ -31,7 +27,6 @@ void setup() {
   HandleInitialization ( );
   os_timer_setfn(&myTimer, timerCallback, NULL);
   os_timer_arm(&myTimer, 1, true);
-  Serial.println ( "HAJIMARU YO!" );
 }
 
 void loop() 

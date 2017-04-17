@@ -7,15 +7,15 @@
 #define HALF_ROTATION 100
 #define SMALL_STEP    4
 #define UNLOCK_MAX    120
-#define A_IN_1  0 //D3
-#define A_IN_2  4 //D2
-#define B_IN_1  12 //D5
+#define A_IN_1  4 //D3
+#define A_IN_2  16 //D0
+#define B_IN_1  0 //D5
 #define B_IN_2  2 //D4
 
 #define MOTOR_SPEED 60
 
 /*Limit switch pin*/
-#define LIMIT_SWITCH 3
+#define LIMIT_SWITCH 10
 
 static Stepper stepper ( STEPS, A_IN_2, A_IN_1, B_IN_1, B_IN_2 );
 static bool bDeviceStatus = false;
@@ -73,10 +73,8 @@ static void HandleLock ( void )
 static void HandleUnlock ( void )
 {
   int iStepcount = 0;
-  while ( iStepcount < UNLOCK_MAX) //( digitalRead ( LIMIT_SWITCH ) == LOW ) && iStepcount < UNLOCK_MAX )
-  {
-    //stepper.step(200);
-   
+  while ( ( digitalRead ( LIMIT_SWITCH ) == LOW ) && iStepcount < UNLOCK_MAX )
+  {   
     stepper.step ( SMALL_STEP );
     iStepcount += SMALL_STEP;
   }
