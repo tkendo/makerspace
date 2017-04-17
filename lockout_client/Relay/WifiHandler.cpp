@@ -22,7 +22,7 @@ void ParseMessage ( String * line  );
 
 void InitWifi_blocking ( void )
 {
-  static IPAddress ip ( 192, 168, 2, IP_OFFSET + ReadSwitches ( ) );
+  static IPAddress ip ( 192, 168, 2, 101 ); //IP_OFFSET + ReadSwitches ( ) );
   
   WiFi.config ( ip, gateway, subnet );
   WiFi.begin ( ssid, password );

@@ -15,5 +15,5 @@ void HandleInitialization ( void )
   InitDevice ( );
 	
 	CreateTask ( LEDTask, 300 );
-  CreateTask ( SendRequest, 400 );
+  CreateTask ( SendRequest, 1000 );
 }

@@ -15,14 +15,14 @@ static const char* host = "192.168.2.5";
 /*TODO: Fix me*/
 static const char* ssid     = "lockout";
 static const char* password = "quietmoon560";
-static const char message[] = "arg=lockout";
+static const char message[] = "request_status";
 #define STATUS "status"
 #define BEEPFLASH "beepflash"
 void ParseMessage ( String * line  );
 
 void InitWifi_blocking ( void )
 {
-  static IPAddress ip ( 192, 168, 2, 100);//IP_OFFSET + ReadSwitches ( ) );
+static IPAddress ip ( 192, 168, 2, IP_OFFSET + ReadSwitches ( ) );
   
   WiFi.config ( ip, gateway, subnet );
   WiFi.begin ( ssid, password );
@@ -42,7 +42,7 @@ bool InitWifi_non_blocking ( void )
   
   static CONFIG_STATE configState = START_STATE;
   bool bReturn = false;
-  static IPAddress ip ( 192, 168, 2, IP_OFFSET + ReadSwitches ( ) );
+  static IPAddress ip ( 192, 168, 2, 105);//IP_OFFSET + ReadSwitches ( ) );
   switch ( configState )
   {
     case START_STATE:
@@ -89,16 +89,7 @@ void SendRequest ( void )
       if ( conn.connect ( host,  httpPort ) )
       {
         Serial.println ( "Connecting!");
-        conn.println("POST /unlock HTTP/1.1");    
-        conn.print("Host: ");
-        conn.println(host);
-        conn.println("User-Agent: Arduino/1.0");
-        conn.println("Connection: close");
-        conn.println("Content-Type: application/x-www-form-urlencoded;");
-        conn.print("Content-Length: ");
-        conn.println(strlen(message));
-        conn.println();
-        conn.println(message);
+        conn.println(message);    
         eState = REQUEST_RECEIVING;
       }
 
