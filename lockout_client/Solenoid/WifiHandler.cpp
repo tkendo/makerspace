@@ -42,7 +42,7 @@ bool InitWifi_non_blocking ( void )
   
   static CONFIG_STATE configState = START_STATE;
   bool bReturn = false;
-  static IPAddress ip ( 192, 168, 2, 105);//IP_OFFSET + ReadSwitches ( ) );
+  static IPAddress ip ( 192, 168, 2, IP_OFFSET + ReadSwitches ( ) );
   switch ( configState )
   {
     case START_STATE:
@@ -75,7 +75,7 @@ bool isWifiConnected ( void )
 void SendRequest ( void )
 {
   static WiFiClient conn;
-  const int httpPort = 80;
+  const int httpPort = 6000;
   typedef enum {
     REQUEST_SENDING,
     REQUEST_RECEIVING,
