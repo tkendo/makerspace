@@ -3,7 +3,7 @@ import sqlite3
 import pykka
 import SocketServer
 import sys
-import time
+from datetime import datetime
 
 DATABASE = '../maker.sqlite'
 
@@ -37,7 +37,7 @@ class nodeHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         self.data = self.request.recv(1024).strip()
         print "Request from: {}".format(self.client_address[0])
-        print time.time() 
+        print str(datetime.now()) 
         client_ip = self.client_address[0]
 
         status = get_node_status(client_ip)
@@ -54,6 +54,7 @@ class nodeHandler(SocketServer.BaseRequestHandler):
 def init_node_server():
     HOST, PORT = "192.168.2.5", 80
 
+    SocketServer.TCPServer.allow_resuse_address = True
     server = SocketServer.TCPServer((HOST, PORT), nodeHandler)
 
     server.serve_forever()

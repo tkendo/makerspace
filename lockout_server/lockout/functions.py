@@ -67,7 +67,7 @@ def create_tables():
 
     write_db('CREATE TABLE IF NOT EXISTS log(log_id INTEGER PRIMARY KEY NOT NULL,'
                 'user_id INTEGER, node_id INTEGER,'
-                'timestamp INTEGER, msgcode INTEGER,'
+                'timestamp INTEGER, msgcode INTEGER, msgdata TEXT,'
                 'FOREIGN KEY(user_id) REFERENCES users(user_id),'
                 'FOREIGN KEY(node_id) REFERENCES nodes(node_id))')
 
@@ -83,7 +83,32 @@ def get_node_status(nd_ip_addr):
     t = (nd_ip_addr,)
     res = query_db('SELECT status from nodes WHERE ip_addr = ?', t)
     return res
+
+def get_log():
+    res = query_db('SELECT log_id, log.user_id, log.node_id, timestamp, msgcode, msgdata, users.uname, nodes.name from log LEFT OUTER JOIN users ON users.user_id = log.user_id LEFT OUTER JOIN nodes ON nodes.node_id = log.node_id ORDER BY log_id DESC LIMIT 25')
+    return res
+
+def get_log_all():
+    res = query_db('SELECT log_id, log.user_id, log.node_id, timestamp, msgcode, msgdata, users.uname, nodes.name from log LEFT OUTER JOIN users ON users.user_id = log.user_id LEFT OUTER JOIN nodes ON nodes.node_id = log.node_id ORDER BY log_id ASC')
+    return res
+
+def get_users():
+    res = query_db('SELECT user_id, uname, email from users')
+
+    return res
+
+def get_machs():
+    res = query_db('SELECT node_num, name, status FROM nodes ORDER BY node_num ASC')
+
+    return res
     
+   
+def get_auth_by_user(user_id):
+    t = (user_id,)
+    res = query_db('SELECT nodes.node_num from auth LEFT OUTER JOIN nodes ON nodes.node_id = auth.node_id WHERE user_id = ? ORDER BY nodes.node_num ASC', t)
+
+    return res
+ 
 def set_node_status(nd_num, status):
     t = (status, nd_num)
     res = write_db('UPDATE nodes SET status = ? WHERE node_num = ?', t)

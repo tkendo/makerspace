@@ -15,10 +15,6 @@ from lockout import app
 #app.logger.setLevel(logging.DEBUG)
 
 if __name__ == "__main__":
-    app.run(host='192.168.2.5', port=80, debug = True)
+    app.run(host='192.168.2.5', port=8080, debug = True)
+    #app.run(host='192.168.2.5', port=8080)
 
-    # this probably needs to go somewhere else TODO tk
-#    create_tables()
-
-    #app.run(host='127.0.0.1', port=80) #, debug = True)
-    # app.run()
