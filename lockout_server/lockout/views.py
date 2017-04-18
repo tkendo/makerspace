@@ -63,7 +63,7 @@ def decode_msgcode(msgCode):
 
 @app.route('/systemlog')
 def systemlog():
-    log = get_log(10)
+    log = get_log(6)
     log = [l + (make_timestamp(l[3]),decode_msgcode(l[4])) for l in log]
     return render_template('systemlog.html', log=log)
 

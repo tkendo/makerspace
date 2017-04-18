@@ -26,14 +26,13 @@
 </nav>
 
 <article class="article">
-<a href="logfile.csv" class="myButton btn-work width">Download Logfile</a></li>
 <table class="table-fill">
 <thead>
 <tr>
-<th class="text-left">Node </th>
+<th class="text-left">Machine</th>
 <th class="text-left">User</th>
-<th class="text-left">Msgcode</th>
-<th class="text-left">Msgdata</th>
+<th class="text-left">Type</th>
+<th class="text-left">Message</th>
 <th class="text-left">Time</th>
 </tr>
 </thead>
@@ -49,6 +48,11 @@
 {% endfor %}
 </tbody>
 </table>
+<br>
+<div style="text-align: center;">
+<a href="logfile.csv" class="myButton btn-work width">Download Logfile</a></li>
+</div>
+<br>
 </article>
 
 <footer>
