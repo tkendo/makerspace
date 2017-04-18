@@ -45,14 +45,23 @@ with open(sys.argv[1], 'rb') as csvfile:
     next(reader, None) # skip header row
 
     for row in reader:
-        t = (row[2], row[0], row[1])
-
+        
         print 'Adding User | uname:', row[0], ' email:', row[1], ' ID:', row[2]  
+
+        # check to see if the user already exists in the database        
+        t = (row[2],)
+        res = query_db('SELECT user_id FROM users WHERE stu_id_hash = ?', t)
+        if len(res) > 0:
+            print 'Error! Duplicate Student ID value exists in database'
+            print 'User add failed'
+            continue
+
+        t = (row[2], row[0], row[1])
         write_db('INSERT INTO users VALUES (null, ?, ?, ?, 0)', t)
 
         # get user_id of user we just added above based on username
         t = (row[0],)
-        res = query_db('SELECT user_id FROM users WHERE uname = ?', t)
+        res = query_db('SELECT user_id FROM users WHERE uname = ? ORDER BY user_id DESC', t)
  
         if len(res) < 1:
             print 'Error! User add failed'
