@@ -72,23 +72,23 @@ class LCDActor ( pykka.ThreadingActor ):
     def on_receive ( self, msg ):
 
         if ( msg['type'] == LCDActor_machine ):
-            process_LCD.process_lcd ( "MACHINE #:" + CR_LF + msg['data'] + CR_LF )
+            process_LCD.process_lcd ( "MACHINE #:" + CR_LF + msg['data'] )
         elif ( msg['type'] == LCDActor_id ):
-            process_LCD.process_lcd ( "ID:" + CR_LF + msg['data'] + CR_LF )
+            process_LCD.process_lcd ( "ID:" + CR_LF + msg['data'])
         elif ( msg['type'] == LCDActor_home_screen ):
-            process_LCD.process_lcd ( "Enter Machine #" + CR_LF + CR_LF )
+            process_LCD.process_lcd ( "Enter Machine #" + CR_LF )
         elif ( msg['type'] == LCDActor_swipe_card ):
-            process_LCD.process_lcd ( 'Slide ID' + CR_LF + 'To Begin' + CR_LF )
+            process_LCD.process_lcd ( 'Slide ID' + CR_LF + 'To Begin' )
         elif ( msg['type'] == LCDActor_lock_screen ):
-            process_LCD.process_lcd ( 'Lock Machine' + CR_LF + str(msg['data']) + "?"+ CR_LF ) 
+            process_LCD.process_lcd ( 'Lock Machine' + CR_LF + str(msg['data']) + "?" ) 
         elif ( msg['type'] == LCDActor_unlock ):
-            process_LCD.process_lcd ( 'MACHINE #' + str(msg['data']) + CR_LF + "UNLOCKED" + CR_LF )
+            process_LCD.process_lcd ( 'MACHINE #' + str(msg['data']) + CR_LF + "UNLOCKED" )
         elif ( msg['type'] == LCDActor_machine_locked ):
-            process_LCD.process_lcd ( 'MACHINE #' + str(msg['data']) + CR_LF + "LOCKED" + CR_LF )
+            process_LCD.process_lcd ( 'MACHINE #' + str(msg['data']) + CR_LF + "LOCKED" )
         elif ( msg['type'] == LCDActor_lock ):
-            process_LCD.process_lcd ( 'NOT' + CR_LF + 'AUTHETICATED' + CR_LF )
+            process_LCD.process_lcd ( 'NOT' + CR_LF + 'AUTHETICATED' )
         elif ( msg['type'] == LCDActor_invalid ):
-            process_LCD.process_lcd ( 'INVALID' +CR_LF+ 'MACHINE' + CR_LF )
+            process_LCD.process_lcd ( 'INVALID' +CR_LF+ 'MACHINE' )
 
 class KeypadActor ( pykka.ThreadingActor ):
     def __init__(self, ui_urn ):
