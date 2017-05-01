@@ -5,7 +5,7 @@
 
 #define STEPS 200
 #define HALF_ROTATION 100
-#define SMALL_STEP    4
+#define SMALL_STEP    1
 #define UNLOCK_MAX    120
 #define A_IN_1  4 //D3
 #define A_IN_2  16 //D0
@@ -30,10 +30,10 @@ void InitDevice ( )
   pinMode ( LIMIT_SWITCH, INPUT );
   if ( digitalRead ( LIMIT_SWITCH ) == LOW )
   {
-    bDeviceStatus = true;
+    bDeviceStatus = false;
   }
   else {
-    bDeviceStatus = false;
+    bDeviceStatus = true;
   }
 }
 
