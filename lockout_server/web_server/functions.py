@@ -10,7 +10,7 @@
 import sqlite3
 from flask import g
 
-from lockout import app
+from web_server import app
 
 DATABASE = 'maker.sqlite'
 

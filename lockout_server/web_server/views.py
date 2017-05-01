@@ -10,9 +10,8 @@
 from flask import render_template, request, Response
 from serial import Serial
 
-from lockout import app
-#from lockout.forms import *
-from lockout.functions import *
+from web_server import app
+from web_server.functions import *
 
 import sys
 import datetime

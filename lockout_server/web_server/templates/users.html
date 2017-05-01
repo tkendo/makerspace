@@ -10,7 +10,7 @@
 <div class="flex-container">
 <header>
   <h1>Makers Space Lockout System</h1>
-  <h2>Machines</h2>
+  <h2>Users</h2>
 </header>
 
 <nav class="nav">
@@ -29,18 +29,20 @@
 <table class="table-fill">
 <thead>
 <tr>
-<th class="text-left">&#35</th>
-<th class="text-left">Machine Name</th>
-<th class="text-left">Status</th>
+<th class="text-left">User ID</th>
+<th class="text-left">User Name</th>
+<th class="text-left">Email</th>
+<th class="text-left">Authorized Nodes</th>
 </tr>
 </thead>
 <tbody class="table-hover">
 
-{% for m in machs %}
+{% for u in users %}
 <tr>
-<td class="text-left">{{ m[0] }}</td>
-<td class="text-left">{{ m[1] }}</td>
-<td class="text-left">{{ m[3] }}</td>
+<td class="text-left">{{ u[0] }}</td>
+<td class="text-left">{{ u[1] }}</td>
+<td class="text-left">{{ u[2] }}</td>
+<td class="text-left">{% for nd in u[3] %} {{ nd[0] }} {% endfor %}</td>
 </tr>
 {% endfor %}
 
