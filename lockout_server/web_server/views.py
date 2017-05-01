@@ -21,6 +21,11 @@ LOG_MSGCODE_AUTH_GRANT = 2
 LOG_MSGCODE_UNKNOWN_ID = 3 
 LOG_MSGCODE_LOCK_NODE  = 4 
 
+def make_timestamp(unixTime):
+    if unixTime == None:
+        return '--' 
+    return datetime.datetime.fromtimestamp(int(unixTime)).strftime('%Y-%m-%d %H:%M:%S') 
+
 @app.route('/')
 @app.route('/index')
 @app.route('/systemstatus')
@@ -41,12 +46,9 @@ def decode_mach_status(mach_status):
 @app.route('/machines')
 def machines():
     machs = get_machs()
-    machs = [m + (decode_mach_status(m[2]),) for m in machs]
-
+    machs = [m + (decode_mach_status(m[2]), (make_timestamp(m[4]))) for m in machs]
     return render_template('machines.html', machs=machs)
 
-def make_timestamp(unixTime):
-    return datetime.datetime.fromtimestamp(int(unixTime)).strftime('%Y-%m-%d %H:%M:%S') 
 
 def decode_msgcode(msgCode):
     if(msgCode == LOG_MSGCODE_LOCK_NODE):
@@ -62,7 +64,7 @@ def decode_msgcode(msgCode):
 
 @app.route('/systemlog')
 def systemlog():
-    log = get_log(6)
+    log = get_log(10)
     log = [l + (make_timestamp(l[3]),decode_msgcode(l[4])) for l in log]
     return render_template('systemlog.html', log=log)
 

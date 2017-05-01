@@ -6,7 +6,7 @@ from threading import Timer,Thread,Event
 import os
 import sys
 
-DATABASE = '../maker.sqlite'
+DATABASE = '/home/pi/makerspace/lockout_server/maker.sqlite'
 
 db = None
 
@@ -57,11 +57,11 @@ def get_nodeid(node_num):
     
     return res[0][0] if len(res) > 0 else -1
 
-def get_node_type(node_id):
+def get_node_type_and_timeout(node_id):
     t = (node_id,)
-    res = query_db('SELECT node_type FROM nodes WHERE node_id = ?', t)
-    
-    return res[0][0] if len(res) > 0 else -1
+    res = query_db('SELECT node_type, timeout FROM nodes WHERE node_id = ?', t)
+   
+    return res[0] if len(res) > 0 else -1
 
 def log_event(user_id, node_id, msgcode, msgdata):
     #print 'log> user:' + str(user_id) + ' node:' + str(node_id) + ' msgcode:' + str(msgcode) +  ' msgdata: ' + msgdata
@@ -90,6 +90,19 @@ def set_node_status(node_id, status):
     
     return res
 
+def set_checkout(user_id, node_id):
+    timestamp = int(time.time())
+    t = (user_id, node_id, timestamp)
+    res = write_db('INSERT INTO checkouts VALUES (null, ?, ?, ?, 0)', t)
+
+    return res
+
+def clear_checkout(node_id):
+    t = (node_id,)
+    res = write_db('DELETE FROM checkouts WHERE node_id = ?', t)
+
+    return res
+
 def reply_to_ui(msgtype, msgdata):
     ui_actor = pykka.ActorRegistry.get_by_class_name ( "UIActor" )
     
@@ -113,13 +126,17 @@ def get_mach_status(mach_num):
     reply_to_ui(server_actors.UIActor_receive_mach_status, response)
     
 # this will be in a child process !!
-def relock_callback(node_id):
-    time.sleep(10)
-    print 'running callback node = ' + str(node_id)
+def relock_callback(node_id, timeout_secs):
+    
+    print 'Running callback: node = ' + str(node_id) + ' in time = ' + str(timeout_secs)
+    time.sleep(timeout_secs)
     
     res = set_node_status(node_id, 0)
+    log_event(None, node_id, LOG_MSGCODE_LOCK_NODE, 'Locked via timeout')
     if(res < 0):
         print 'Error clearing node'
+
+    clear_checkout(node_id)
 
     # kill child process
     sys.exit(0) 
@@ -145,13 +162,13 @@ def handle_auth_req(auth_req):
         reply_to_ui(server_actors.UIActor_auth, response)
         return
 
-    ntyp = get_node_type(nid)
-    print 'node type ' + str(ntyp)
+    (ntyp,timeout) = get_node_type_and_timeout(nid)
 
+    # if node type is SOLENOID, we have to relock automatically
     if(ntyp == 1):
         ret = os.fork()
         if(ret == 0): # if child, run relock callback
-            relock_callback(nid)
+            relock_callback(nid, timeout)
  
     auth = get_authorization(uid, nid)
     if auth == -1:
@@ -163,6 +180,7 @@ def handle_auth_req(auth_req):
         log_event(uid, nid, LOG_MSGCODE_AUTH_GRANT, 'Authorized')
         set_node_status(nid, 1) 
         response = server_actors.AuthApprove
+        set_checkout(uid, nid)
 
     reply_to_ui(server_actors.UIActor_auth, response)
 
@@ -173,6 +191,8 @@ def relock_mach(mach_num):
     res = set_node_status(nid, 0)
     log_event(None, nid, LOG_MSGCODE_LOCK_NODE, 'Locked')
     
+    clear_checkout(nid)   
+ 
     if res != 1:
         print 'controller: Failed to set node status'
 

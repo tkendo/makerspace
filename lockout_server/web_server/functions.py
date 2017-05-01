@@ -12,7 +12,7 @@ from flask import g
 
 from web_server import app
 
-DATABASE = 'maker.sqlite'
+DATABASE = '/home/pi/makerspace/lockout_server/maker.sqlite'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -96,7 +96,7 @@ def get_users():
     return res
 
 def get_machs():
-    res = query_db('SELECT node_num, name, status FROM nodes ORDER BY node_num ASC')
+    res = query_db('SELECT node_num, name, status, users.uname, checkouts.start_time FROM nodes LEFT OUTER JOIN checkouts ON nodes.node_id = checkouts.node_id LEFT OUTER JOIN users ON checkouts.user_id = users.user_id ORDER BY node_num ASC')
 
     return res
     

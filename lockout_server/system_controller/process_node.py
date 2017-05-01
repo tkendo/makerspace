@@ -5,7 +5,7 @@ import SocketServer
 import sys
 from datetime import datetime
 
-DATABASE = '../maker.sqlite'
+DATABASE = '/home/pi/makerspace/lockout_server/maker.sqlite'
 
 db = None
 
